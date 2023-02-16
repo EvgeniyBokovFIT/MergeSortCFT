@@ -3,9 +3,10 @@ package ru.bokov;
 import ru.bokov.exception.ReaderException;
 import ru.bokov.exception.SorterException;
 import ru.bokov.reader.IntegerReader;
-import ru.bokov.reader.Reader;
+import ru.bokov.reader.AbstractReader;
 import ru.bokov.reader.StringReader;
 import org.apache.commons.cli.ParseException;
+import ru.bokov.sorter.MergeSorter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,11 @@ public class Main {
         try {
             ArgumentsParser.parse(args);
             SortInfo sortInfo = ArgumentsParser.getSortInfo();
-            Sorter sorter = new Sorter(sortInfo);
+            MergeSorter mergeSorter = new MergeSorter(sortInfo);
             if(sortInfo.getInputType().equals(Integer.class)) {
-                sorter.sort(makeIntegerReaders(sortInfo.getInputFilenames()));
+                mergeSorter.sort(makeIntegerReaders(sortInfo.getInputFilenames()));
             } else {
-                sorter.sort(makeStringReaders(sortInfo.getInputFilenames()));
+                mergeSorter.sort(makeStringReaders(sortInfo.getInputFilenames()));
             }
         } catch (ParseException | SorterException e) {
             System.err.println(e.getMessage());
@@ -27,8 +28,8 @@ public class Main {
         }
     }
 
-    private static List<Reader<Integer>> makeIntegerReaders(List<String> filenames) {
-        List<Reader<Integer>> readers = new ArrayList<>();
+    private static List<AbstractReader<Integer>> makeIntegerReaders(List<String> filenames) {
+        List<AbstractReader<Integer>> readers = new ArrayList<>();
         for (var filename: filenames) {
             try {
                 readers.add(new IntegerReader(filename));
@@ -39,8 +40,8 @@ public class Main {
         return readers;
     }
 
-    private static List<Reader<String>> makeStringReaders(List<String> filenames) {
-        List<Reader<String>> readers = new ArrayList<>();
+    private static List<AbstractReader<String>> makeStringReaders(List<String> filenames) {
+        List<AbstractReader<String>> readers = new ArrayList<>();
         for (var filename: filenames) {
             try {
                 readers.add(new StringReader(filename));

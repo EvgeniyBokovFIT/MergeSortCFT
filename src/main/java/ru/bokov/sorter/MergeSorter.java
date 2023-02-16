@@ -1,7 +1,9 @@
-package ru.bokov;
+package ru.bokov.sorter;
 
+import ru.bokov.SortInfo;
+import ru.bokov.SortOrder;
 import ru.bokov.exception.SorterException;
-import ru.bokov.reader.Reader;
+import ru.bokov.reader.AbstractReader;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,14 +11,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class Sorter {
+public class MergeSorter implements Sorter{
     private final SortInfo sortInfo;
 
-    public Sorter(SortInfo sortInfo) {
+    public MergeSorter(SortInfo sortInfo) {
         this.sortInfo = sortInfo;
     }
 
-    public <T extends Comparable<T>> void sort(List<Reader<T>> readers) throws SorterException {
+    public <T extends Comparable<T>> void sort(List<AbstractReader<T>> readers) throws SorterException {
         try (FileWriter fileWriter = new FileWriter(sortInfo.getOutputFilename())) {
             var optionalReader = findReaderWithNextElem(readers);
 
@@ -32,15 +34,15 @@ public class Sorter {
     }
 
 
-    private <T extends Comparable<T>> Optional<Reader<T>> findReaderWithNextElem(
-            List<Reader<T>> readers) {
+    private <T extends Comparable<T>> Optional<AbstractReader<T>> findReaderWithNextElem(
+            List<AbstractReader<T>> readers) {
         if(sortInfo.getSortOrder().equals(SortOrder.ASC)) {
             return readers.stream()
-                    .min(Comparator.comparing(Reader::getElement));
+                    .min(Comparator.comparing(AbstractReader::getElement));
         }
 
         return readers.stream()
-                .max(Comparator.comparing(Reader::getElement));
+                .max(Comparator.comparing(AbstractReader::getElement));
     }
 
     private <T extends Comparable<T>> boolean isSortedCorrectly(T curElement, T prevElement) {
@@ -56,13 +58,13 @@ public class Sorter {
         return curElement.compareTo(prevElement) <= 0;
     }
 
-    private <T extends Comparable<T>> void removeReader(Reader<T> reader, List<Reader<T>> readers) {
+    private <T extends Comparable<T>> void removeReader(AbstractReader<T> reader, List<AbstractReader<T>> readers) {
         reader.close();
         readers.remove(reader);
     }
 
     private <T extends Comparable<T>> void doSortStep(
-            Reader<T> reader, List<Reader<T>> readers, FileWriter fileWriter) throws IOException {
+            AbstractReader<T> reader, List<AbstractReader<T>> readers, FileWriter fileWriter) throws IOException {
 
         if (!isSortedCorrectly(reader.getElement(), reader.getPrevElement())) {
             removeReader(reader, readers);

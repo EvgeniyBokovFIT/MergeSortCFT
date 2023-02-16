@@ -4,7 +4,7 @@ import ru.bokov.exception.ReaderException;
 
 import java.util.Optional;
 
-public class StringReader extends Reader<String>{
+public class StringReader extends AbstractReader<String> {
 
     public StringReader(String filename) throws ReaderException {
         super(filename);
