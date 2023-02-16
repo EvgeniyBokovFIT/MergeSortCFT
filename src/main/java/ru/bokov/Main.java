@@ -7,6 +7,7 @@ import ru.bokov.reader.AbstractReader;
 import ru.bokov.reader.StringReader;
 import org.apache.commons.cli.ParseException;
 import ru.bokov.sorter.MergeSorter;
+import ru.bokov.sorter.Sorter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,11 @@ public class Main {
         try {
             ArgumentsParser.parse(args);
             SortInfo sortInfo = ArgumentsParser.getSortInfo();
-            MergeSorter mergeSorter = new MergeSorter(sortInfo);
+            Sorter sorter = new MergeSorter(sortInfo);
             if(sortInfo.getInputType().equals(Integer.class)) {
-                mergeSorter.sort(makeIntegerReaders(sortInfo.getInputFilenames()));
+                sorter.sort(makeIntegerReaders(sortInfo.getInputFilenames()));
             } else {
-                mergeSorter.sort(makeStringReaders(sortInfo.getInputFilenames()));
+                sorter.sort(makeStringReaders(sortInfo.getInputFilenames()));
             }
         } catch (ParseException | SorterException e) {
             System.err.println(e.getMessage());
