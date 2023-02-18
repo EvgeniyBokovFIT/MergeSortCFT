@@ -74,7 +74,8 @@ public class ArgumentsParser {
         HelpFormatter helpFormatter = new HelpFormatter();
         PrintWriter printWriter = new PrintWriter(System.out);
         helpFormatter.printUsage(printWriter, MESSAGE_WIDTH,
-                "java -jar MergeSortCFT-1.0-SNAPSHOT.jar [-a|-d] {-i|-s} outfile infile1 [infile2...]");
+                "java -jar MergeSortCFT-1.0-jar-with-dependencies.jar " +
+                        "[-a|-d] {-i|-s} outfile.txt infile1.txt [infile2.txt...]");
         helpFormatter.printOptions(printWriter, MESSAGE_WIDTH, options,
                 LEFT_PADDING, DESCRIPTION_PADDING);
         printWriter.close();
