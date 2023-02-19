@@ -21,7 +21,7 @@
 
 В директории с проектом:
 
-    mvn compiler:compile
+    mvn compile
     mvn package
     cd target
     java -jar MergeSortCFT-1.0-jar-with-dependencies.jar [-a|-d] {-i|-s} outfile.txt infile1.txt [infile2.txt...]
@@ -32,4 +32,11 @@
 -i - сортировка целых чисел (обязательный)\
 -s - сортировка строк (обязательный)\
 outfile.txt - название выходного файла\
-infile1.txt - название входного файла (не менее одного)\
+infile1.txt - название входного файла (не менее одного)
+
+### Версия Java
+Java 19
+### Система сборки
+Apache Maven 3.8.1
+### Сторонние библиотеки
+Apache Commons CLI 1.5.0 https://mvnrepository.com/artifact/commons-cli/commons-cli/1.5.0
